@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+:root {
+  font-size: 32px;
+  font-family: system-ui, -apple-system;
+}
