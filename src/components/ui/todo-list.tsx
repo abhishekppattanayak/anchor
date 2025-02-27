@@ -22,7 +22,7 @@ function Todo(props: ITodo) {
 			<input
 				class={`${
 					completed() ? "line-through text-white/50" : ""
-				} flex items-center w-full border-b border-neutral-700 focus:outline-none bg-transparent`}
+				} flex items-center w-full focus:outline-none bg-transparent`}
 				type="text"
 				value={text()}
 				onchange={(e) => setText(e.target.value)}
@@ -35,7 +35,7 @@ export default function TodoList() {
 	const [todos, setTodos] = createSignal<ITodo[]>([]);
 
 	return (
-		<ul class="border border-neutral-800 rounded-md p-2 overflow-scroll flex flex-col gap-2">
+		<ul class="border border-neutral-800 rounded-md p-2 overflow-y-auto flex flex-col gap-2">
 			<For each={todos()}>{(todo) => <Todo {...todo} />}</For>
 			<li class="border-b border-neutral-700">
 				<input

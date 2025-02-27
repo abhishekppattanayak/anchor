@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html
+	lang="en"
+	class="overflow-hidden"
+>
 	<head>
 		<meta charset="utf-8" />
 		<meta
@@ -10,12 +13,30 @@
 			name="theme-color"
 			content="#000000"
 		/>
-    <style>
-      html, body {
-        background-color: black;
-        color: white;
-      }
-    </style>
+		<style>
+			html,
+			body {
+				background-color: black;
+				color: white;
+			}
+			::-webkit-scrollbar {
+				width: 2px;
+			}
+			/* Track */
+			::-webkit-scrollbar-track {
+				background: transparent;
+			}
+
+			/* Handle */
+			::-webkit-scrollbar-thumb {
+				background: white;
+			}
+
+			/* Handle on hover */
+			::-webkit-scrollbar-thumb:hover {
+				background: white;
+			}
+		</style>
 		<title>Anchor</title>
 	</head>
 
