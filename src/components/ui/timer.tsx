@@ -2,6 +2,8 @@ import { createSignal, createMemo, onCleanup, createEffect } from "solid-js";
 import PauseSvg from "../svg/pause.svg";
 import PlaySvg from "../svg/play.svg";
 import RefreshSvg from "../svg/refresh.svg";
+import UpSvg from "../svg/up.svg";
+import DownSvg from "../svg/down.svg";
 
 function formatString(num: number): string {
 	return num.toString().padStart(2, "0");
@@ -9,12 +11,12 @@ function formatString(num: number): string {
 
 export default function Timer() {
 	// Number of minutes
-	const maxTime = 60 * 10;
+	const [maxTime, setMaxTime] = createSignal(60 * 25);
 
-	const [time, setTime] = createSignal<number>(maxTime);
+	const [time, setTime] = createSignal<number>(maxTime());
 	const [isRunning, setIsRunning] = createSignal<boolean>(false);
 	const isPaused = createMemo(
-		() => !isRunning() && time() !== 0 && time() !== maxTime
+		() => !isRunning() && time() !== 0 && time() !== maxTime()
 	);
 
 	const seconds = createMemo<string>(() => formatString(time() % 60));
@@ -69,10 +71,77 @@ export default function Timer() {
 		}
 	});
 
+	// Function to add a minute
+	const addOneMinute = () => {
+		if (!isRunning()) {
+			const newMaxTime = maxTime() + 60;
+			setMaxTime(newMaxTime);
+			setTime(newMaxTime);
+		}
+	};
+
+	// Function to subtract a minute
+	const subtractOneMinute = () => {
+		if (!isRunning() && maxTime() > 0) {
+			const newMaxTime = maxTime() - 60;
+			setMaxTime(newMaxTime);
+			setTime(newMaxTime);
+		}
+	};
+
+	// Function to add a second
+	const addOneSecond = () => {
+		if (!isRunning()) {
+			const newMaxTime = maxTime() + 1;
+			setMaxTime(newMaxTime);
+			setTime(newMaxTime);
+		}
+	};
+
+	const subtractOneSecond = () => {
+		if (!isRunning() && maxTime() > 0) {
+			const newMaxTime = maxTime() - 1;
+			setMaxTime(newMaxTime);
+			setTime(newMaxTime);
+		}
+	};
+
 	return (
 		<div class="w-full px-4 flex flex-col items-center gap-2">
-			<div class={`${isPaused() ? "animate-pulse" : ""} text-5xl `}>
-				{minutes() + ":" + seconds()}
+			<div
+				class={`${
+					isPaused() ? "animate-pulse" : ""
+				} text-5xl flex items-center *:h-fit`}
+			>
+				<div class="flex items-center">
+					<div>
+						<UpSvg
+							class="h-6 hover:cursor-pointer"
+							onclick={addOneMinute}
+						/>
+						<DownSvg
+							class="h-6 hover:cursor-pointer"
+							onclick={subtractOneMinute}
+						/>
+					</div>
+					<div>{minutes()}</div>
+				</div>
+				<span class="flex flex-col justify-center h-full leading-none">
+					<span>:</span>
+				</span>
+				<div class="flex items-center">
+					<div class="leading-none">{seconds()}</div>
+					<div>
+						<UpSvg
+							class="h-6 hover:cursor-pointer"
+							onclick={addOneSecond}
+						/>
+						<DownSvg
+							class="h-6 hover:cursor-pointer"
+							onclick={subtractOneSecond}
+						/>
+					</div>
+				</div>
 			</div>
 			<div class="flex gap-2">
 				<div
@@ -91,7 +160,7 @@ export default function Timer() {
 			<div class="min-w-40 h-0.5 w-full md:w-3/4 lg:w-1/2 max-w-60 bg-neutral-600 rounded-full">
 				<div
 					class="h-full bg-neutral-300 rounded-full transition-all duration-300"
-					style={{ width: `${((maxTime - time()) / maxTime) * 100}%` }}
+					style={{ width: `${((maxTime() - time()) / maxTime()) * 100}%` }}
 				></div>
 			</div>
 		</div>

@@ -1,3 +1,4 @@
 export interface SvgProps {
-  class?: string;
+	class?: string;
+	onclick?: () => void;
 }
