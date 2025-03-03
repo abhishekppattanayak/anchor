@@ -35,7 +35,7 @@ export default function TodoList() {
 	const [todos, setTodos] = createSignal<ITodo[]>([]);
 
 	return (
-		<ul class="border border-neutral-800 rounded-md p-2 overflow-y-auto flex flex-col gap-2">
+		<ul class="w-10/12 md:w-8/12 xl:w-6/12 text-sm border border-neutral-800 rounded-md p-2 overflow-y-auto flex flex-col gap-2">
 			<For each={todos()}>{(todo) => <Todo {...todo} />}</For>
 			<li class="border-b border-neutral-700">
 				<input
