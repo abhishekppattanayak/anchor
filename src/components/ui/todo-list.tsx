@@ -1,4 +1,4 @@
-import { createEffect, createSignal, For } from "solid-js";
+import { createSignal, For } from "solid-js";
 import { ITodo } from "../../types/interface";
 import { useStoreContext } from "../../context/StoreProvider";
 import DeleteSvg from "../svg/delete.svg";
