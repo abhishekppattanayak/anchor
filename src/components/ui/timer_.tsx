@@ -1,6 +1,5 @@
 import { createEffect, createMemo, createSignal, Accessor } from "solid-js";
 import { concatenateClassNames, formatString } from "../../utils/utils";
-import RefreshSvg from "../svg/refresh.svg";
 
 interface DisplayTimerProps {
 	className?: string;
@@ -26,7 +25,7 @@ function DisplayTimer(props: DisplayTimerProps) {
 	const _class = createMemo(() =>
 		concatenateClassNames(
 			className,
-			"text-3xl font-light *:leading-none *:h-min flex",
+			"text-3xl font-light *:leading-none *:h-min flex active:scale-95 w-18 gap-1",
 			isPaused() && "animate-pulse"
 		)
 	);
@@ -38,17 +37,13 @@ function DisplayTimer(props: DisplayTimerProps) {
 			<div
 				class={_class()}
 				onclick={toggleTimer}
+				oncontextmenu={resetTimer}
 				title={_title()}
 			>
 				<p>{minutes()}</p>
 				<p>:</p>
 				<p>{seconds()}</p>
 			</div>
-
-			<RefreshSvg
-				class="hover:cursor-pointer"
-				onclick={resetTimer}
-			/>
 		</div>
 	);
 }
@@ -98,9 +93,6 @@ export default function Timer(props: TimerProps) {
 			intervalId = setInterval(() => {
 				setIsRunning(true);
 				setTime((prev) => (prev > 0 ? prev - 1 : 0));
-				console.log(time());
-				console.log(minutes());
-				console.log(seconds());
 			}, 100);
 		}
 	};

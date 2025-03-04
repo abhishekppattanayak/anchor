@@ -3,7 +3,7 @@ import { SvgProps } from "./svg";
 export default function RefreshSvg(props: SvgProps) {
 	return (
 		<svg
-			class={`${props.class} w-6 aspect-square`}
+			class={`${props.class} aspect-square`}
 			viewBox="0 0 24 24"
 			xmlns="http://www.w3.org/2000/svg"
 			onclick={props.onclick}
