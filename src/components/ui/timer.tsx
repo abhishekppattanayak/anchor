@@ -1,3 +1,5 @@
+/** @deprecated component  */
+
 import { createSignal, createMemo, onCleanup, createEffect } from "solid-js";
 import PauseSvg from "../svg/pause.svg";
 import PlaySvg from "../svg/play.svg";

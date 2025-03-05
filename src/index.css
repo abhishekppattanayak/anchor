@@ -1,6 +1,15 @@
 @import "tailwindcss";
 
 :root {
-  font-size: 24px;
-  font-family: system-ui, -apple-system;
+	font-size: 24px;
+	font-family: system-ui, -apple-system;
+}
+
+@theme {
+	--animate-delete: delete 250ms ease-in-out;
+	@keyframes delete {
+		100% {
+			transform: translateX(100%);
+		}
+	}
 }

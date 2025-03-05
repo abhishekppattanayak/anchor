@@ -7,20 +7,28 @@ function Todo(props: ITodo) {
 	const { updateTodo, deleteTodo } = useStoreContext();
 	const [completed, setCompleted] = createSignal(false);
 	const [isHovering, setIsHovering] = createSignal(false);
+	const [deleted, setDeleted] = createSignal(false);
 
 	const handleMouseEnter = () => setIsHovering(true);
 	const handleMouseLeave = () => setIsHovering(false);
 
+	const handleDelete = () => {
+		setDeleted(true);
+		setTimeout(() => deleteTodo(props.id), 249);
+	};
+
 	return (
 		<li
-			class="flex items-center gap-2 px-2 py-0.5 rounded-sm hover:bg-white/5"
+			class={`${
+				deleted() && "animate-delete"
+			} flex items-center gap-2 px-2 py-0.5 rounded-sm hover:bg-white/5`}
 			onmouseenter={handleMouseEnter}
 			onmouseleave={handleMouseLeave}
 		>
 			<div
 				class={`border ${
 					completed() ? "border-blue-400" : "border-neutral-400"
-				} w-3 aspect-square bg-transparent rounded-full p-0.5 cursor-pointer`}
+				} w-3 aspect-square bg-transparent rounded-full p-0.5 cursor-pointer shrink-0`}
 				onclick={() => setCompleted(!completed())}
 			>
 				{completed() && (
@@ -30,7 +38,7 @@ function Todo(props: ITodo) {
 			<input
 				class={`${
 					completed() ? "line-through text-white/50" : ""
-				} flex items-center w-full focus:outline-none bg-transparent`}
+				} flex items-center w-full focus:outline-none bg-transparent leading-0`}
 				type="text"
 				value={props.text}
 				onchange={(e) => updateTodo(props.id, e.currentTarget.value)}
@@ -38,7 +46,7 @@ function Todo(props: ITodo) {
 			{isHovering() && (
 				<button
 					class="h-full aspect-square p-1 hover:cursor-pointer hover:bg-white/10 rounded-full  *:fill-white hover:*:fill-red-300"
-					onclick={() => deleteTodo(props.id)}
+					onclick={handleDelete}
 					title="delete"
 				>
 					<DeleteSvg class="h-full aspect-square" />
@@ -52,7 +60,7 @@ export default function TodoList() {
 	const { store, createTodo } = useStoreContext();
 
 	return (
-		<ul class="w-10/12 md:w-8/12 xl:w-6/12 *:text-sm border border-neutral-800 rounded-md p-2 overflow-y-auto flex flex-col gap-0.5">
+		<ul class="w-10/12 md:w-8/12 xl:w-6/12 *:text-sm border border-neutral-800 rounded-md p-2 overflow-x-hidden overflow-y-auto flex flex-col gap-0.5">
 			<For each={store}>{(todo) => <Todo {...todo} />}</For>
 			<li class="border-b border-neutral-700">
 				<input
