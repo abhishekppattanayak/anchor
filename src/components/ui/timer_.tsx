@@ -125,7 +125,7 @@ export default function Timer(props: TimerProps) {
 	createEffect(() => {
 		if (time() === 0) {
 			stopTimer();
-			notify("Anchor", "Time to take a break!");
+			notify("Time to take a break!");
 		}
 	});
 

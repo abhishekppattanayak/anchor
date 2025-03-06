@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
   "productName": "anchor",
-  "version": "0.3.1",
-  "identifier": "com.anchor.app",
+  "version": "0.4.1",
+  "identifier": "com.abhishekppattanayak.anchor",
   "build": {
     "beforeDevCommand": "deno task dev",
     "devUrl": "http://localhost:1420",
