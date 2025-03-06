@@ -1,4 +1,4 @@
-/src/main/java/com/anchor/app/generated
+/src/main/java/com/abhishekppattanayak/anchor/generated
 /src/main/jniLibs/**/*.so
 /src/main/assets/tauri.conf.json
 /tauri.build.gradle.kts
