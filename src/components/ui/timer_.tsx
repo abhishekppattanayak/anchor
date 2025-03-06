@@ -1,5 +1,5 @@
 import { createEffect, createMemo, createSignal, Accessor } from "solid-js";
-import { concatenateClassNames, formatString } from "../../utils/utils";
+import { concatenateClassNames, formatString, notify } from "../../utils/utils";
 
 interface DisplayTimerProps {
 	className?: string;
@@ -72,7 +72,7 @@ interface TimerProps {
 export default function Timer(props: TimerProps) {
 	const { minuteCount } = props;
 
-	const maxTime = 10 * 60 * minuteCount;
+	const maxTime = 10 * 60 * minuteCount; // unit := centiseconds
 	const [time, setTime] = createSignal(maxTime);
 	const [isRunning, setIsRunning] = createSignal(false);
 	const isPaused = createMemo(
@@ -125,6 +125,7 @@ export default function Timer(props: TimerProps) {
 	createEffect(() => {
 		if (time() === 0) {
 			stopTimer();
+			notify("Anchor", "Time to take a break!");
 		}
 	});
 
