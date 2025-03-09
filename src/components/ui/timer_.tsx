@@ -4,17 +4,19 @@ import { DisplayTimer } from "./displaytimer";
 import { ProgressBar } from "./progressbar";
 
 interface TimerProps {
-	minuteCount: 25 | 5;
+	minuteCount: () => 25 | 5;
+	onTimerComplete: () => void;
 }
 
 export default function Timer(props: TimerProps) {
-	const { minuteCount } = props;
+	const { minuteCount, onTimerComplete } = props;
 
-	const maxTime = 10 * 60 * minuteCount; // unit := centiseconds
-	const [time, setTime] = createSignal(maxTime);
+	const maxTime = createMemo(() => 10 * 60 * minuteCount()); // unit := centiseconds
+	const [time, setTime] = createSignal(maxTime());
+
 	const [isRunning, setIsRunning] = createSignal(false);
 	const isPaused = createMemo(
-		() => !isRunning() && time() !== maxTime && time() !== 0
+		() => !isRunning() && time() !== maxTime() && time() !== 0
 	);
 
 	const seconds = createMemo(() =>
@@ -59,11 +61,20 @@ export default function Timer(props: TimerProps) {
 		intervalId = undefined;
 	};
 
-	// Effect to stop the timer when it reaches 0
+	createEffect(() => {
+		setTime(maxTime());
+	});
+
+	// Effect to handle timer completion
 	createEffect(() => {
 		if (time() === 0) {
 			stopTimer();
-			notify("Time to take a break!");
+			notify(
+				minuteCount() === 25
+					? "Time to take a break!"
+					: "Break's over! Back to work!"
+			);
+			onTimerComplete();
 		}
 	});
 
