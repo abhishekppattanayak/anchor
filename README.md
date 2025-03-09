@@ -1,7 +1,7 @@
 # Anchor
 
-Latest version: 0.5.1      
-Last updated: March 07, 2025
+Latest version: 0.5.2       
+Last updated: March 09, 2025
 
 ## What is Anchor?
 
@@ -13,7 +13,7 @@ Anchor is a minimalistic producitivity tool. The goal of Anchor is that _you_ co
 
 ### For Users
 Download and install Anchor using one of our supported installers:
-1. Windows: [anchor_0.5.1_x64_en-US.msi](./installers/anchor_0.5.1_x64_en-US.msi)
+1. Windows: [anchor_0.5.2_x64_en-US.msi](./installers/anchor_0.5.2_x64_en-US.msi)
 
 For users on other operating systems, you're welcome to clone the repository and build Anchor locally! We encourage contributions - feel free to submit a pull request to add installer support for your preferred OS. This helps make Anchor accessible to more users.
 
