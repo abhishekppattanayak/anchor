@@ -5,8 +5,8 @@ import DeleteSvg from "../svg/delete.svg";
 import PlusSvg from "../svg/plus.svg";
 
 function TodoChild(props: ITodo) {
-	const { updateChild, deleteChild } = useStoreContext();
-	const [completed, setCompleted] = createSignal(false);
+	const { updateChild, deleteChild, setChildCompleted } = useStoreContext();
+	const completed = props.completed;
 	const [isHovering, setIsHovering] = createSignal(false);
 	const [deleted, setDeleted] = createSignal(false);
 
@@ -25,6 +25,10 @@ function TodoChild(props: ITodo) {
 		}
 	};
 
+	const handleComplete = () => {
+		setChildCompleted(props.parentId, props.id, !completed);
+	};
+
 	return (
 		<li
 			class={`${
@@ -38,17 +42,17 @@ function TodoChild(props: ITodo) {
 			>
 				<div
 					class={`border ${
-						completed() ? "border-blue-400" : "border-neutral-400"
+						completed ? "border-blue-400" : "border-neutral-400"
 					} w-3 aspect-square bg-transparent rounded-full p-0.5 cursor-pointer shrink-0`}
-					onclick={() => setCompleted(!completed())}
+					onclick={handleComplete}
 				>
-					{completed() && (
+					{completed && (
 						<div class="w-full aspect-square rounded-full bg-blue-400"></div>
 					)}
 				</div>
 				<input
 					class={`${
-						completed() ? "line-through text-white/50" : ""
+						completed ? "line-through text-white/50" : ""
 					} flex items-center w-full focus:outline-none bg-transparent leading-0`}
 					type="text"
 					placeholder="Add a subtask"
@@ -77,8 +81,9 @@ function TodoChild(props: ITodo) {
 
 function Todo(props: ITodo) {
 	const { children } = props;
-	const { updateTodo, deleteTodo, createChild } = useStoreContext();
-	const [completed, setCompleted] = createSignal(false);
+	const { updateTodo, deleteTodo, createChild, setTodoCompleted } =
+		useStoreContext();
+	const completed = props.completed;
 	const [isHovering, setIsHovering] = createSignal(false);
 	const [deleted, setDeleted] = createSignal(false);
 
@@ -97,6 +102,10 @@ function Todo(props: ITodo) {
 		}
 	};
 
+	const handleComplete = () => {
+		setTodoCompleted(props.id, !completed);
+	};
+
 	return (
 		<li
 			class={`${
@@ -110,17 +119,17 @@ function Todo(props: ITodo) {
 			>
 				<div
 					class={`border ${
-						completed() ? "border-blue-400" : "border-neutral-400"
+						completed ? "border-blue-400" : "border-neutral-400"
 					} w-3 aspect-square bg-transparent rounded-full p-0.5 cursor-pointer shrink-0`}
-					onclick={() => setCompleted(!completed())}
+					onclick={handleComplete}
 				>
-					{completed() && (
+					{completed && (
 						<div class="w-full aspect-square rounded-full bg-blue-400"></div>
 					)}
 				</div>
 				<input
 					class={`${
-						completed() ? "line-through text-white/50" : ""
+						completed ? "line-through text-white/50" : ""
 					} flex items-center w-full focus:outline-none bg-transparent leading-0`}
 					type="text"
 					value={props.text}

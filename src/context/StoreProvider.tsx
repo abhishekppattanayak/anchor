@@ -22,13 +22,24 @@ interface IStoreContextValue {
 	createChild: (parentId: number, text: string) => void;
 	updateChild: (parentId: number, childId: number, text: string) => void;
 	deleteChild: (parentId: number, childId: number) => void;
+	setTodoCompleted: (id: number, completed: boolean) => void;
+	setChildCompleted: (
+		parentId: number,
+		childId: number,
+		completed: boolean
+	) => void;
 }
 
 export default function StoreContextProvider(props: StoreProviderProps) {
 	const [store, setStore] = createStore<ITodo[]>([]);
 
 	const createTodo = (text: string) => {
-		const newTodo = { id: Date.now(), text, parentId: 0 };
+		const newTodo: ITodo = {
+			id: Date.now(),
+			text,
+			parentId: 0,
+			completed: false,
+		};
 		setStore([...store, newTodo]);
 	};
 
@@ -41,11 +52,20 @@ export default function StoreContextProvider(props: StoreProviderProps) {
 	};
 
 	const createChild = (parentId: number, text: string) => {
-		const newChild = { id: Date.now(), text, parentId };
+		const newChild: ITodo = {
+			id: Date.now(),
+			text,
+			parentId,
+			completed: false,
+		};
 		setStore(
 			store.map((todo) =>
 				todo.id === parentId
-					? { ...todo, children: [...(todo.children || []), newChild] }
+					? {
+							...todo,
+							completed: false,
+							children: [...(todo.children || []), newChild],
+					  }
 					: todo
 			)
 		);
@@ -72,7 +92,53 @@ export default function StoreContextProvider(props: StoreProviderProps) {
 				todo.id === parentId
 					? {
 							...todo,
+							completed:
+								todo.children
+									?.filter((child) => child.id !== childId)
+									.every((child) => child.completed) ?? false,
 							children: todo.children?.filter((child) => child.id !== childId),
+					  }
+					: todo
+			)
+		);
+	};
+
+	const setTodoCompleted = (id: number, completed: boolean) => {
+		setStore(
+			store.map((todo) =>
+				todo.id === id
+					? {
+							...todo,
+							completed,
+							children: todo.children?.map((child) => ({
+								...child,
+								completed,
+							})),
+					  }
+					: todo
+			)
+		);
+	};
+
+	const setChildCompleted = (
+		parentId: number,
+		childId: number,
+		completed: boolean
+	) => {
+		setStore(
+			store.map((todo) =>
+				todo.id === parentId
+					? {
+							...todo,
+							completed:
+								completed &&
+								(todo.children?.every((c) =>
+									c.id === childId ? completed : c.completed
+								) ??
+									true),
+							children: todo.children?.map((child) =>
+								child.id === childId ? { ...child, completed } : child
+							),
 					  }
 					: todo
 			)
@@ -89,6 +155,8 @@ export default function StoreContextProvider(props: StoreProviderProps) {
 				createChild,
 				updateChild,
 				deleteChild,
+				setTodoCompleted,
+				setChildCompleted,
 			}}
 		>
 			{props.children}

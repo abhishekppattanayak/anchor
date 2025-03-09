@@ -3,6 +3,7 @@ declare interface ITodo {
 	id: number;
 	text: string;
 	parentId: number;
+	completed: boolean;
 	children?: ITodo[];
 }
 
