@@ -1,69 +1,7 @@
-import { createEffect, createMemo, createSignal, Accessor } from "solid-js";
-import { concatenateClassNames, formatString, notify } from "../../utils/utils";
-
-interface DisplayTimerProps {
-	className?: string;
-	minutes: Accessor<string>;
-	seconds: Accessor<string>;
-	toggleTimer: () => void;
-	resetTimer: () => void;
-	isRunning: Accessor<boolean>;
-	isPaused: Accessor<boolean>;
-}
-
-function DisplayTimer(props: DisplayTimerProps) {
-	const {
-		className,
-		minutes,
-		seconds,
-		toggleTimer,
-		resetTimer,
-		isRunning,
-		isPaused,
-	} = props;
-
-	const _class = createMemo(() =>
-		concatenateClassNames(
-			className,
-			"text-3xl font-light *:leading-none *:h-min flex active:scale-95 w-18 gap-1",
-			isPaused() && "animate-pulse"
-		)
-	);
-
-	const _title = createMemo(() => (isRunning() ? "pause" : "start"));
-
-	return (
-		<div class="flex items-center gap-4">
-			<div
-				class={_class()}
-				onclick={toggleTimer}
-				oncontextmenu={resetTimer}
-				title={_title()}
-			>
-				<p>{minutes()}</p>
-				<p>:</p>
-				<p>{seconds()}</p>
-			</div>
-		</div>
-	);
-}
-
-interface ProgressBarProps {
-	maxTime: number;
-	time: Accessor<number>;
-}
-
-function ProgressBar(props: ProgressBarProps) {
-	const { maxTime, time } = props;
-	return (
-		<div class="min-w-40 h-0.5 w-full md:w-3/4 lg:w-1/2 max-w-60 bg-neutral-600 rounded-full">
-			<div
-				class="h-full bg-neutral-300 rounded-full transition-all duration-300"
-				style={{ width: `${((maxTime - time()) / maxTime) * 100}%` }}
-			></div>
-		</div>
-	);
-}
+import { createEffect, createMemo, createSignal } from "solid-js";
+import { formatString, notify } from "../../utils/utils";
+import { DisplayTimer } from "./displaytimer";
+import { ProgressBar } from "./progressbar";
 
 interface TimerProps {
 	minuteCount: 25 | 5;
